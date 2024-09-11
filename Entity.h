@@ -20,6 +20,8 @@ public:
     std::shared_ptr<CScore>     cScore;
     std::shared_ptr<CLifespan>  cLifespan;
 
+    Entity(size_t id, std::string & tag);
+
     bool isActive() const;
     const std::string & tag() const;
     const size_t id() const;
