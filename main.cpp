@@ -20,16 +20,31 @@ int main() {
     entityManager->addEntity("bala");
     entityManager->addEntity("bala");
     entityManager->update();
-    entityManager->printAllEntities();
+    entityManager->printAllEntitiesFromMap();
     jogador->destroy();
-    entityManager->printAllEntities();
+    entityManager->printAllEntitiesFromMap();
     entityManager->update();
-    entityManager->printAllEntities();
+    entityManager->printAllEntitiesFromMap();
     entityManager->addEntity("jogadorBemTop");
-    entityManager->printAllEntities();
     entityManager->update();
-    entityManager->printAllEntities();
-
+    entityManager->printAllEntitiesFromMap();
+    entityManager->addEntity("inimigo");
+    auto inimigo = entityManager->addEntity("inimigo");
+    auto inimigo1 = entityManager->addEntity("inimigo");
+    auto bala1 = entityManager->addEntity("bala");
+    auto bala2 = entityManager->addEntity("bala");
+    auto bala3 = entityManager->addEntity("bala");
+    entityManager->addEntity("bala");
+    entityManager->addEntity("bala");
+    entityManager->update();
+    entityManager->printAllEntitiesFromMap();
+    bala1->destroy();
+    bala2->destroy();
+    bala3->destroy();
+    inimigo->destroy();
+    inimigo1->destroy();
+    entityManager->update();
+    entityManager->printAllEntitiesFromMap();
 
     // std::cout << v1.dist(v2) << "\n";
 }

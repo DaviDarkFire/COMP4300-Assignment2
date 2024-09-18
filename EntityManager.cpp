@@ -11,7 +11,6 @@ std::shared_ptr<Entity> EntityManager::addEntity(const std::string & tag)
 {
     auto entity = std::shared_ptr<Entity>(new Entity(m_totalEntities++, tag));
     m_entitiesToAdd.push_back(entity);
-    m_entityMap[tag].push_back(entity);
     return entity;
 }
 
@@ -24,6 +23,19 @@ void EntityManager::printAllEntities()
     }
     std::cout << "m_entitiesToAdd size: " << m_entitiesToAdd.size() << "\n";
     std::cout << "m_totalEntities: " << m_totalEntities << "\n";
+}
+
+void EntityManager::printAllEntitiesFromMap()
+{
+    std::cout << "\n <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< \n";
+    for (auto& [tag, entityVecFromMap] : m_entityMap)
+    {
+        std::cout << tag << "\n";
+        for (auto entity: entityVecFromMap)
+        {
+            std::cout << "---> " << entity->id() << " active: " << entity->isActive() << "\n";
+        }
+    }
 }
 
 void EntityManager::update()

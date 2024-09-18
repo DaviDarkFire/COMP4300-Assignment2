@@ -28,4 +28,5 @@ public:
 	const EntityVec & getEntities();
 	const EntityVec & getEntities(const std::string & tag);
 	void printAllEntities();
+	void printAllEntitiesFromMap();
 };
