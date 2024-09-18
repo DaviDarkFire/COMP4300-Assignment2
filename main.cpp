@@ -10,9 +10,26 @@ int main() {
     std::string tag = "fodesabuceta";
 
     auto entityManager = new EntityManager();
-    entityManager->addEntity("jogador");
-    // entityManager->update();
+    auto jogador = entityManager->addEntity("jogador");
+    entityManager->addEntity("inimigo");
+    entityManager->addEntity("inimigo");
+    entityManager->addEntity("inimigo");
+    entityManager->addEntity("inimigo");
+    entityManager->addEntity("inimigo");
+    entityManager->addEntity("bala");
+    entityManager->addEntity("bala");
+    entityManager->addEntity("bala");
+    entityManager->update();
     entityManager->printAllEntities();
+    jogador->destroy();
+    entityManager->printAllEntities();
+    entityManager->update();
+    entityManager->printAllEntities();
+    entityManager->addEntity("jogadorBemTop");
+    entityManager->printAllEntities();
+    entityManager->update();
+    entityManager->printAllEntities();
+
 
     // std::cout << v1.dist(v2) << "\n";
 }
