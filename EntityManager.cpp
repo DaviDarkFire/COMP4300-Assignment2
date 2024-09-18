@@ -14,30 +14,6 @@ std::shared_ptr<Entity> EntityManager::addEntity(const std::string & tag)
     return entity;
 }
 
-void EntityManager::printAllEntities()
-{
-    std::cout << "\n <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< \n";
-    for (auto entity: m_entities)
-    {
-        std::cout << entity->tag() << " " << entity->id() << " active: " << entity->isActive() << "\n";
-    }
-    std::cout << "m_entitiesToAdd size: " << m_entitiesToAdd.size() << "\n";
-    std::cout << "m_totalEntities: " << m_totalEntities << "\n";
-}
-
-void EntityManager::printAllEntitiesFromMap()
-{
-    std::cout << "\n <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< \n";
-    for (auto& [tag, entityVecFromMap] : m_entityMap)
-    {
-        std::cout << tag << "\n";
-        for (auto entity: entityVecFromMap)
-        {
-            std::cout << "---> " << entity->id() << " active: " << entity->isActive() << "\n";
-        }
-    }
-}
-
 void EntityManager::update()
 {
     for (auto e : m_entitiesToAdd)
@@ -63,4 +39,28 @@ void EntityManager::removeDeadEntities(EntityVec & vec)
 const EntityVec & EntityManager::getEntities(const std::string & tag)
 {
     return m_entityMap[tag];
+}
+
+void EntityManager::printAllEntities()
+{
+    std::cout << "\n <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< \n";
+    for (auto entity: m_entities)
+    {
+        std::cout << entity->tag() << " " << entity->id() << " active: " << entity->isActive() << "\n";
+    }
+    std::cout << "m_entitiesToAdd size: " << m_entitiesToAdd.size() << "\n";
+    std::cout << "m_totalEntities: " << m_totalEntities << "\n";
+}
+
+void EntityManager::printAllEntitiesFromMap()
+{
+    std::cout << "\n <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< \n";
+    for (auto& [tag, entityVecFromMap] : m_entityMap)
+    {
+        std::cout << tag << "\n";
+        for (auto entity: entityVecFromMap)
+        {
+            std::cout << "---> " << entity->id() << " active: " << entity->isActive() << "\n";
+        }
+    }
 }
