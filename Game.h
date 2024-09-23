@@ -22,7 +22,7 @@ struct BulletConfig {
 
 class Game {
     sf::RenderWindow m_window;
-    EntityManager m_entities;
+    EntityManager m_entityManager;
     sf::Font m_font;
     sf::Text m_text;
     PlayerConfig m_playerConfig;
@@ -30,7 +30,7 @@ class Game {
     BulletConfig m_bulletConfig;
     int m_score = 0;
     int m_currentFrame = 0;
-    int m_lasEnemySpawnTime = 0;
+    int m_lastEnemySpawnTime = 0;
     bool m_paused = false;
     bool m_running = true;
 

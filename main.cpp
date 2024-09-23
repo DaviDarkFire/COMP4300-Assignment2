@@ -1,5 +1,6 @@
 #include "Entity.h"
 #include "EntityManager.h"
+#include "Game.h"
 #include "Vec2.h"
 #include <iostream>
 
@@ -20,14 +21,14 @@ int main() {
     entityManager->addEntity("bala");
     entityManager->addEntity("bala");
     entityManager->update();
-    entityManager->printAllEntitiesFromMap();
+    // entityManager->printAllEntitiesFromMap();
     jogador->destroy();
-    entityManager->printAllEntitiesFromMap();
+    // entityManager->printAllEntitiesFromMap();
     entityManager->update();
-    entityManager->printAllEntitiesFromMap();
+    // entityManager->printAllEntitiesFromMap();
     entityManager->addEntity("jogadorBemTop");
     entityManager->update();
-    entityManager->printAllEntitiesFromMap();
+    // entityManager->printAllEntitiesFromMap();
     entityManager->addEntity("inimigo");
     auto inimigo = entityManager->addEntity("inimigo");
     auto inimigo1 = entityManager->addEntity("inimigo");
@@ -37,14 +38,16 @@ int main() {
     entityManager->addEntity("bala");
     entityManager->addEntity("bala");
     entityManager->update();
-    entityManager->printAllEntitiesFromMap();
+    // entityManager->printAllEntitiesFromMap();
     bala1->destroy();
     bala2->destroy();
     bala3->destroy();
     inimigo->destroy();
     inimigo1->destroy();
     entityManager->update();
-    entityManager->printAllEntitiesFromMap();
+    // entityManager->printAllEntitiesFromMap();
+
+    Game g("config.txt");
 
     // std::cout << v1.dist(v2) << "\n";
 }
