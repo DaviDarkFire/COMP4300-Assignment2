@@ -1,8 +1,13 @@
 #include "Game.h"
+#include "Components.h"
+#include "Vec2.h"
 
+#include <SFML/Graphics/Color.hpp>
+#include <SFML/Window/VideoMode.hpp>
+#include <SFML/Window/Window.hpp>
 #include <iostream>
 #include <fstream>
-#include <sstream>
+#include <memory>
 
 Game::Game(const std::string & config)
 {
@@ -11,19 +16,66 @@ Game::Game(const std::string & config)
 
 void Game::init(const std::string & path)
 {
+    readFromFile(path);
+    setWindow();
+    setFont();
+}
+
+void Game::run()
+{
+    //TODO: add pause functionality
+    //some systems should work while pause some systems shouldn't
+    while (m_running)
+    {
+        m_entityManager.update();
+        if (!m_paused)
+        {
+            sEnemySpawner();
+            sMovement();
+            sCollision();
+            sUserInput();
+            sRender();
+            
+        } else 
+        {
+            sRender();
+        }
+        
+        m_currentFrame++;
+    }
+}
+
+void Game::setPaused(bool paused)
+{
+    m_paused = paused;
+}
+
+void Game::spawnPlayer()
+{
+    auto entity = m_entityManager.addEntity("player");
+    float initialPlayerPositionX = m_window.getSize().x / 2.0f;
+    float initialPlayerPositionY = m_window.getSize().y / 2.0f;
+    entity->cTransform = 
+    std::make_shared<CTransform>(Vec2(initialPlayerPositionX, initialPlayerPositionY), Vec2(), 2.0f);
+    entity->cShape = std::make_shared<CShape>(32.0f, 8, sf::Color(10,10,10), sf::Color(255, 0, 0), 4.0f);
+    entity->cInput = std::make_shared<CInput>();
+    m_player = entity;
+}
+
+void Game::readFromFile(const std::string & path)
+{
     std::ifstream fin(path);
-    std::string fontFile, line, identifier;
-    int w, h, fl, fs, fontSize, fontR, fontG, fontB;
+    std::string line, identifier;
      if (fin.is_open()) {
           while (fin.good()) {
                fin >> line;
                std::cout << line;               
      
                   if (line == "Window") {
-                      fin >> w >> h >> fl >> fs;          
+                      fin >> m_w >> m_h >> m_fl >> m_fs;                              
                   }
                   else if (line == "Font") {
-                      fin >> fontFile >> fontSize >> fontR >> fontG >> fontB;          
+                      fin >> m_fontFile >> m_fontSize >> m_fontR >> m_fontG >> m_fontB;          
                   }
                   else if (line == "Player") {
                       fin >> m_playerConfig.SR >> m_playerConfig.CR >> m_playerConfig.S >> m_playerConfig.FR 
@@ -44,3 +96,22 @@ void Game::init(const std::string & path)
      }
     fin.close();
 }
+
+void Game::setWindow()
+{
+    if (m_fs == 1)
+    {
+        sf::VideoMode desktop = sf::VideoMode::getDesktopMode();    
+        m_window.create(desktop, "Joguin", sf::Style::Fullscreen);
+    } else 
+    {
+        m_window.create(sf::VideoMode(m_w, m_h), "Joguin");
+    }
+    m_window.setFramerateLimit(m_fl);    
+}
+
+void Game::setFont()
+{
+    m_font.loadFromFile(m_fontFile);    
+}
+

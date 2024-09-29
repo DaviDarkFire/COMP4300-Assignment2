@@ -33,10 +33,15 @@ class Game {
     int m_lastEnemySpawnTime = 0;
     bool m_paused = false;
     bool m_running = true;
+    std::string m_fontFile;
+    int m_w, m_h, m_fl, m_fs, m_fontSize, m_fontR, m_fontG, m_fontB;
 
     std::shared_ptr<Entity> m_player;
 
     void init(const std::string & config);
+    void readFromFile(const std::string & config);
+    void setWindow();
+    void setFont();
     void setPaused(bool paused);
 
     void sMovement();

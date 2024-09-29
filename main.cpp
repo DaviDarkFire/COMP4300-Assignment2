@@ -45,9 +45,9 @@ int main() {
     inimigo->destroy();
     inimigo1->destroy();
     entityManager->update();
-    // entityManager->printAllEntitiesFromMap();
+    entityManager->printAllEntitiesFromMap();
+    std::cout << v1.dist(v2) << "\n";
 
     Game g("config.txt");
-
-    // std::cout << v1.dist(v2) << "\n";
+    g.run();
 }
