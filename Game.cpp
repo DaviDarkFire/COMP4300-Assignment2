@@ -45,6 +45,12 @@ void Game::run()
     }
 }
 
+void Game::sRender()
+{
+    m_window.clear();
+
+}
+
 void Game::setPaused(bool paused)
 {
     m_paused = paused;
@@ -55,9 +61,16 @@ void Game::spawnPlayer()
     auto entity = m_entityManager.addEntity("player");
     float initialPlayerPositionX = m_window.getSize().x / 2.0f;
     float initialPlayerPositionY = m_window.getSize().y / 2.0f;
-    entity->cTransform = 
-    std::make_shared<CTransform>(Vec2(initialPlayerPositionX, initialPlayerPositionY), Vec2(), 2.0f);
-    entity->cShape = std::make_shared<CShape>(32.0f, 8, sf::Color(10,10,10), sf::Color(255, 0, 0), 4.0f);
+    entity->cTransform = std::make_shared<CTransform>(
+        Vec2(initialPlayerPositionX, initialPlayerPositionY), 
+        Vec2(0,0),
+        0);
+    entity->cShape = std::make_shared<CShape>(
+        m_playerConfig.SR, 
+        m_playerConfig.V, 
+        sf::Color(m_playerConfig.FR,m_playerConfig.FG,m_playerConfig.FB), 
+        sf::Color(m_playerConfig.OR, m_playerConfig.OG, m_playerConfig.OB), 
+        m_playerConfig.OT);
     entity->cInput = std::make_shared<CInput>();
     m_player = entity;
 }

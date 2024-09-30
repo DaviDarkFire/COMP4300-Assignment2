@@ -20,3 +20,12 @@ void Entity::destroy()
 {
     m_active = false;
 }
+
+void Entity::setPosition(float x, float y) {
+    cShape->circle.setPosition(cTransform->pos.x, cTransform->pos.y);
+}
+
+void Entity::setRotation(float angle) {
+    cTransform->angle += angle;
+    cShape->circle.setRotation(cTransform->angle);
+}
