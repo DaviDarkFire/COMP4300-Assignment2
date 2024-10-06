@@ -25,6 +25,8 @@ public:
     const std::string & tag() const;
     const size_t id() const;
     void destroy();
-    void setPosition(float x, float y);
+    void setPosition();
     void setRotation(float angle);
+    void move();
+    sf::CircleShape getCShape();
 };

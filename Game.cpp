@@ -3,6 +3,8 @@
 #include "Vec2.h"
 
 #include <SFML/Graphics/Color.hpp>
+#include <SFML/Window/Event.hpp>
+#include <SFML/Window/Keyboard.hpp>
 #include <SFML/Window/VideoMode.hpp>
 #include <SFML/Window/Window.hpp>
 #include <iostream>
@@ -25,14 +27,15 @@ void Game::run()
 {
     //TODO: add pause functionality
     //some systems should work while pause some systems shouldn't
+    spawnPlayer();
     while (m_running)
     {
         m_entityManager.update();
         if (!m_paused)
-        {
-            sEnemySpawner();
+        {            
+            // sEnemySpawner();
             sMovement();
-            sCollision();
+            // sCollision();
             sUserInput();
             sRender();
             
@@ -45,10 +48,71 @@ void Game::run()
     }
 }
 
+void Game::sUserInput()
+{
+    sf::Event event;
+    while (m_window.pollEvent(event)) 
+    {
+        if (event.type == sf::Event::Closed) 
+        {
+            m_running = false;
+            m_window.close();
+        }
+
+        if (event.type == sf::Event::KeyPressed)
+        {
+            switch (event.key.code)
+            {
+                case sf::Keyboard::W:
+                    std::cout << "W\n";
+                    m_player->cInput->up = true;
+                    break;
+                case sf::Keyboard::S:
+                    m_player->cInput->down = true;
+                    break;
+                case sf::Keyboard::A:
+                    m_player->cInput->left = true;
+                    break;
+                case sf::Keyboard::D:
+                    m_player->cInput->right = true;
+                    break;
+                default:
+                    break;
+            }
+        }
+        if (event.type == sf::Event::KeyReleased)
+        {
+            switch (event.key.code)
+            {
+                case sf::Keyboard::W:
+                    m_player->cInput->up = false;
+                    break;
+                case sf::Keyboard::S:
+                    m_player->cInput->down = false;
+                    break;
+                case sf::Keyboard::A:
+                    m_player->cInput->left = false;
+                    break;
+                case sf::Keyboard::D:
+                    m_player->cInput->right = false;
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+}
+
 void Game::sRender()
 {
     m_window.clear();
-
+    for (auto e : m_entityManager.getEntities())
+    {
+        e->setPosition();
+        e->setRotation(1.0f);
+        m_window.draw(e->getCShape());
+    }
+    m_window.display();
 }
 
 void Game::setPaused(bool paused)
@@ -126,5 +190,14 @@ void Game::setWindow()
 void Game::setFont()
 {
     m_font.loadFromFile(m_fontFile);    
+    if (!m_font.loadFromFile(m_fontFile))
+    {
+        return;
+    }
+}
+
+void Game::sMovement()
+{
+    m_player->move();
 }
 

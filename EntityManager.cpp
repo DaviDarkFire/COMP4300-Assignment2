@@ -41,6 +41,11 @@ const EntityVec & EntityManager::getEntities(const std::string & tag)
     return m_entityMap[tag];
 }
 
+const EntityVec & EntityManager::getEntities()
+{
+    return m_entities;
+}
+
 void EntityManager::printAllEntities()
 {
     std::cout << "\n <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< \n";
