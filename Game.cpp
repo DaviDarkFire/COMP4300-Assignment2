@@ -63,8 +63,7 @@ void Game::sUserInput()
         {
             switch (event.key.code)
             {
-                case sf::Keyboard::W:
-                    std::cout << "W\n";
+                case sf::Keyboard::W:                
                     m_player->cInput->up = true;
                     break;
                 case sf::Keyboard::S:
@@ -109,7 +108,7 @@ void Game::sRender()
     for (auto e : m_entityManager.getEntities())
     {
         e->setPosition();
-        e->setRotation(1.0f);
+        e->setRotation(e->getShapePointCount());
         m_window.draw(e->getCShape());
     }
     m_window.display();
@@ -137,6 +136,28 @@ void Game::spawnPlayer()
         m_playerConfig.OT);
     entity->cInput = std::make_shared<CInput>();
     m_player = entity;
+}
+
+void Game::spawnEnemy()
+{
+    auto entity = m_entityManager.addEntity("enemy");
+    //TODO: needing to spawn numbers on a random location not spawning the on top of the player or 
+    // outside the screen
+    float initialEnemyPositionX = m_window.getSize().x / 2.0f;
+    float initialEnemyPositionY = m_window.getSize().y / 2.0f;
+    entity->cTransform = std::make_shared<CTransform>(
+        Vec2(initialEnemyPositionX, initialEnemyPositionY), 
+        Vec2(0,0),
+        0);
+
+        //TODO: needing to populate data with enemy configuration
+    entity->cShape = std::make_shared<CShape>(
+        m_enemyConfig.SR, 
+        m_playerConfig.V, 
+        sf::Color(m_playerConfig.FR,m_playerConfig.FG,m_playerConfig.FB), 
+        sf::Color(m_playerConfig.OR, m_playerConfig.OG, m_playerConfig.OB), 
+        m_playerConfig.OT);
+    entity->cInput = std::make_shared<CInput>();    
 }
 
 void Game::readFromFile(const std::string & path)

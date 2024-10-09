@@ -55,3 +55,8 @@ void Entity::move(){
     cTransform->pos.y += cTransform->velocity.y;
     cTransform->pos.x += cTransform->velocity.x;
 }
+
+int Entity::getShapePointCount() 
+{
+    return cShape->circle.getPointCount();
+}

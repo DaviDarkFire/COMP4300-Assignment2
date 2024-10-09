@@ -28,5 +28,6 @@ public:
     void setPosition();
     void setRotation(float angle);
     void move();
+    int getShapePointCount();
     sf::CircleShape getCShape();
 };
