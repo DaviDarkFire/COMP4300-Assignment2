@@ -1,4 +1,5 @@
 #include "Entity.h"
+#include "Vec2.h"
 
 Entity::Entity(const size_t id, const std::string & tag): m_id(id), m_tag(tag){}
 
@@ -21,8 +22,19 @@ void Entity::destroy()
     m_active = false;
 }
 
-void Entity::setPosition() {
+void Entity::setPosition() 
+{
     cShape->circle.setPosition(cTransform->pos.x, cTransform->pos.y);
+}
+
+Vec2 Entity::getPosition() 
+{
+    return cTransform->pos;
+}
+
+int Entity::getColisionRadius()
+{
+    return cCollision->radius;
 }
 
 void Entity::setRotation(float angle) {

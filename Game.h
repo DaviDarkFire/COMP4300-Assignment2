@@ -57,6 +57,11 @@ class Game {
     void spawnBullet(std::shared_ptr<Entity> entity, const Vec2 & mousePos);
     void spawnSpecialWeapon(std::shared_ptr<Entity> entity);
 
+    Vec2 generateValidStartingPosition(int collisionRadius);
+    int rng(int min, int max);
+    Vec2 calculateXAndYCoordinatesForSpeed(int speed);
+    Vec2 calculateAngleForSpeed(int speed);
+
 public:
     Game(const std::string & config);
 

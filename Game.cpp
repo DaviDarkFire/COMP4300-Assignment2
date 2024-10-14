@@ -124,10 +124,12 @@ void Game::spawnPlayer()
     auto entity = m_entityManager.addEntity("player");
     float initialPlayerPositionX = m_window.getSize().x / 2.0f;
     float initialPlayerPositionY = m_window.getSize().y / 2.0f;
+    /*TODO: need to calculate x and y components of player speed based on m_playerConfig.S
+    need to add the CCollision component*/
     entity->cTransform = std::make_shared<CTransform>(
         Vec2(initialPlayerPositionX, initialPlayerPositionY), 
-        Vec2(0,0),
-        0);
+        calculateXAndYCoordinatesForSpeed(m_playerConfig.S),
+        calculateAngleForSpeed(m_playerConfig.S));
     entity->cShape = std::make_shared<CShape>(
         m_playerConfig.SR, 
         m_playerConfig.V, 
@@ -141,23 +143,48 @@ void Game::spawnPlayer()
 void Game::spawnEnemy()
 {
     auto entity = m_entityManager.addEntity("enemy");
-    //TODO: needing to spawn numbers on a random location not spawning the on top of the player or 
-    // outside the screen
-    float initialEnemyPositionX = m_window.getSize().x / 2.0f;
-    float initialEnemyPositionY = m_window.getSize().y / 2.0f;
-    entity->cTransform = std::make_shared<CTransform>(
-        Vec2(initialEnemyPositionX, initialEnemyPositionY), 
-        Vec2(0,0),
-        0);
 
-        //TODO: needing to populate data with enemy configuration
+    //TODO: needing to populate data with enemy configuration
+    int amountOfVertices = rng(m_enemyConfig.VMIN, m_enemyConfig.VMAX);
     entity->cShape = std::make_shared<CShape>(
         m_enemyConfig.SR, 
-        m_playerConfig.V, 
-        sf::Color(m_playerConfig.FR,m_playerConfig.FG,m_playerConfig.FB), 
-        sf::Color(m_playerConfig.OR, m_playerConfig.OG, m_playerConfig.OB), 
-        m_playerConfig.OT);
-    entity->cInput = std::make_shared<CInput>();    
+        amountOfVertices, 
+        sf::Color(rng(1, 255),rng(1, 255), rng(1, 255)), 
+        sf::Color(m_enemyConfig.OR, m_enemyConfig.OG, m_enemyConfig.OB), 
+        m_enemyConfig.OT);
+
+
+    /* added a little difference from the specification: the higher the amount of vertices, 
+    higher the speed of the enemy */
+    entity->cTransform = std::make_shared<CTransform>( 
+        generateValidStartingPosition(m_enemyConfig.CR), 
+        calculateXAndYCoordinatesForSpeed(amountOfVertices),
+        calculateAngleForSpeed(amountOfVertices));
+
+    //TODO: need to create the CCollision, CScore and CLifespan components
+
+}
+
+Vec2 Game::generateValidStartingPosition(int collisionRadius)
+{
+    //TODO: need also to check if the starting position is not colliding with player position
+    return Vec2(rng(collisionRadius, m_window.getSize().x - collisionRadius), 
+                rng(collisionRadius, m_window.getSize().y - collisionRadius));
+}
+
+Vec2 Game::calculateXAndYCoordinatesForSpeed(int speed)
+{
+    //TODO: implement this
+}
+
+Vec2 Game::calculateAngleForSpeed(int speed)
+{
+    //TODO: implement this
+}
+
+int Game::rng(int min, int max)
+{
+    return rand()%(max-min + 1) + min;
 }
 
 void Game::readFromFile(const std::string & path)
