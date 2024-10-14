@@ -59,8 +59,7 @@ class Game {
 
     Vec2 generateValidStartingPosition(int collisionRadius);
     int rng(int min, int max);
-    Vec2 calculateXAndYCoordinatesForSpeed(int speed);
-    Vec2 calculateAngleForSpeed(int speed);
+    Vec2 calculateRandomComponentsForSpeed(int speed);
 
 public:
     Game(const std::string & config);

@@ -128,8 +128,8 @@ void Game::spawnPlayer()
     need to add the CCollision component*/
     entity->cTransform = std::make_shared<CTransform>(
         Vec2(initialPlayerPositionX, initialPlayerPositionY), 
-        calculateXAndYCoordinatesForSpeed(m_playerConfig.S),
-        calculateAngleForSpeed(m_playerConfig.S));
+        calculateRandomComponentsForSpeed(m_playerConfig.S),
+        m_playerConfig.V*40.0f); //defining rotating angle based on number of vertices
     entity->cShape = std::make_shared<CShape>(
         m_playerConfig.SR, 
         m_playerConfig.V, 
@@ -158,8 +158,8 @@ void Game::spawnEnemy()
     higher the speed of the enemy */
     entity->cTransform = std::make_shared<CTransform>( 
         generateValidStartingPosition(m_enemyConfig.CR), 
-        calculateXAndYCoordinatesForSpeed(amountOfVertices),
-        calculateAngleForSpeed(amountOfVertices));
+        calculateRandomComponentsForSpeed(amountOfVertices),
+        amountOfVertices*40.0f); //defining rotating angle based on number of vertices
 
     //TODO: need to create the CCollision, CScore and CLifespan components
 
@@ -172,12 +172,7 @@ Vec2 Game::generateValidStartingPosition(int collisionRadius)
                 rng(collisionRadius, m_window.getSize().y - collisionRadius));
 }
 
-Vec2 Game::calculateXAndYCoordinatesForSpeed(int speed)
-{
-    //TODO: implement this
-}
-
-Vec2 Game::calculateAngleForSpeed(int speed)
+Vec2 Game::calculateRandomComponentsForSpeed(int speed)
 {
     //TODO: implement this
 }
