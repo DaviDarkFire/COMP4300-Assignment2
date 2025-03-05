@@ -29,7 +29,6 @@ public:
     Vec2 getPosition();
     int getColisionRadius();
     void setRotation(float angle);
-    void move();
     int getShapePointCount();
     sf::CircleShape getCShape();
 };

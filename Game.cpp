@@ -7,6 +7,7 @@
 #include <SFML/Window/Keyboard.hpp>
 #include <SFML/Window/VideoMode.hpp>
 #include <SFML/Window/Window.hpp>
+#include <cmath>
 #include <iostream>
 #include <fstream>
 #include <memory>
@@ -33,9 +34,9 @@ void Game::run()
         m_entityManager.update();
         if (!m_paused)
         {            
-            // sEnemySpawner();
+            sEnemySpawner();
             sMovement();
-            // sCollision();
+            sCollision();
             sUserInput();
             sRender();
             
@@ -163,18 +164,31 @@ void Game::spawnEnemy()
 
     //TODO: need to create the CCollision, CScore and CLifespan components
 
+    entity->cShape = std::make_shared<CShape>(m_enemyConfig.SR, 
+    amountOfVertices, 
+    sf::Color(rng(0, 255), rng(0, 255), rng(0, 255)),
+    sf::Color(m_enemyConfig.OR, m_enemyConfig.OG, m_enemyConfig.OB),
+    m_enemyConfig.OT);
+
+    m_lastEnemySpawnTime = m_currentFrame;
 }
 
 Vec2 Game::generateValidStartingPosition(int collisionRadius)
 {
-    //TODO: need also to check if the starting position is not colliding with player position
-    return Vec2(rng(collisionRadius, m_window.getSize().x - collisionRadius), 
-                rng(collisionRadius, m_window.getSize().y - collisionRadius));
+    int possiblePosition_x = rng(collisionRadius, m_window.getSize().x - collisionRadius);
+    int possiblePosition_y = rng(collisionRadius, m_window.getSize().y - collisionRadius);
+
+    return Vec2(possiblePosition_x, possiblePosition_y);
 }
 
 Vec2 Game::calculateRandomComponentsForSpeed(int speed)
 {
-    //TODO: implement this
+    int randomness_x = rng(-1, 1);
+    int randomness_y = rng(-1, 1);
+    if (randomness_x == randomness_y == 0) {
+        return Vec2(std::sqrt(speed*speed/2), std::sqrt(speed*speed/2));
+    }
+    return Vec2(randomness_x*std::sqrt(speed*speed/2), randomness_y*std::sqrt(speed*speed/2));
 }
 
 int Game::rng(int min, int max)
@@ -241,6 +255,66 @@ void Game::setFont()
 
 void Game::sMovement()
 {
-    m_player->move();
+    movePlayer();
+    moveEnemy();
 }
 
+void Game::sEnemySpawner() 
+{
+    if ( m_currentFrame - m_lastEnemySpawnTime >= INTERVAL_OF_FRAMES_TO_SPAWN_ENEMY) {
+        spawnEnemy();
+    }
+}
+
+void Game::movePlayer() {
+    m_player->cTransform->velocity = {0,0};
+    if ( m_player->cInput->up)
+    {
+         m_player->cTransform->velocity.y = -7;
+    }
+    if ( m_player->cInput->down)
+    {
+         m_player->cTransform->velocity.y = 7;
+    }
+    if ( m_player->cInput->right)
+    {
+         m_player->cTransform->velocity.x = 7;
+    }
+    if ( m_player->cInput->left)
+    {
+         m_player->cTransform->velocity.x = -7;
+    }
+     m_player->cTransform->pos.y +=  m_player->cTransform->velocity.y;
+     m_player->cTransform->pos.x +=  m_player->cTransform->velocity.x;
+}
+
+void Game::moveEnemy() {    
+    for (auto e : m_entityManager.getEntities())
+    {
+        if (e->tag() != "player") {
+            e->cTransform->pos.y +=  e->cTransform->velocity.y;
+            e->cTransform->pos.x +=  e->cTransform->velocity.x;
+        }
+    }
+}
+
+void Game::sCollision() {
+    windowCollision();
+}
+
+void Game::windowCollision() {
+    std::cout << "oe";
+    for (auto e : m_entityManager.getEntities())
+    {
+        if (e->tag() != "player") {
+            if (e->cTransform->pos.y + e->cCollision->radius >= m_window.getPosition().y) {
+                std::cout << "oe2";
+                e->cTransform->pos.y +=  (-1)*e->cTransform->velocity.y;
+
+            } 
+            if (e->cTransform->pos.x + e->cCollision->radius >= m_window.getPosition().x) {                
+                e->cTransform->pos.x +=  (-1)*e->cTransform->velocity.x;
+            }         
+        }
+    }
+}

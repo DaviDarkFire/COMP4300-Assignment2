@@ -46,28 +46,6 @@ sf::CircleShape Entity::getCShape() {
     return cShape->circle;
 }
 
-void Entity::move(){
-    cTransform->velocity = {0,0};
-    if (cInput->up)
-    {
-        cTransform->velocity.y = -7;
-    }
-    if (cInput->down)
-    {
-        cTransform->velocity.y = 7;
-    }
-    if (cInput->right)
-    {
-        cTransform->velocity.x = 7;
-    }
-    if (cInput->left)
-    {
-        cTransform->velocity.x = -7;
-    }
-    cTransform->pos.y += cTransform->velocity.y;
-    cTransform->pos.x += cTransform->velocity.x;
-}
-
 int Entity::getShapePointCount() 
 {
     return cShape->circle.getPointCount();

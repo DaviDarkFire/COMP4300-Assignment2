@@ -37,6 +37,7 @@ class Game {
     int m_w, m_h, m_fl, m_fs, m_fontSize, m_fontR, m_fontG, m_fontB;
 
     std::shared_ptr<Entity> m_player;
+    int INTERVAL_OF_FRAMES_TO_SPAWN_ENEMY = 50;
 
     void init(const std::string & config);
     void readFromFile(const std::string & config);
@@ -60,6 +61,10 @@ class Game {
     Vec2 generateValidStartingPosition(int collisionRadius);
     int rng(int min, int max);
     Vec2 calculateRandomComponentsForSpeed(int speed);
+    void movePlayer();
+    void moveEnemy();
+    void entityCollision();
+    void windowCollision();
 
 public:
     Game(const std::string & config);
